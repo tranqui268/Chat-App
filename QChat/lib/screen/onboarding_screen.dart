@@ -153,7 +153,7 @@ class createPage extends StatelessWidget {
           const SizedBox(height: 20,),
           Text(title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Constants.primaryColor,
             fontSize: 30,
             fontWeight: FontWeight.bold

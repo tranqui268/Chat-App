@@ -96,7 +96,13 @@ class Login extends StatelessWidget {
             ),
 
             const Padding(padding: EdgeInsets.only(top: 100)),
-            const DashedLineWithText(text: "OR CONTINUE WITH")
+            const DashedLineWithText(text: "OR CONTINUE WITH"),
+
+            const Padding(padding: EdgeInsets.only(top: 40)),
+            ButtonLoginBase(text: 'Sign In With Facebook', image: 'assets/images/facebook.png', onPressed: (){}),
+
+            const Padding(padding: EdgeInsets.only(top: 20)),
+            ButtonLoginBase(text: 'Sign In With Google', image: 'assets/images/google.png', onPressed: (){})
 
           ],
         ),
@@ -192,6 +198,35 @@ class _ButtonLoginState extends State<_ButtonLogin>{
             color: Colors.white,
             fontSize: 20,
           )
+        )
+    );
+  }
+}
+
+class ButtonLoginBase extends StatelessWidget{
+  final String text;
+  final String image;
+  final VoidCallback onPressed;
+
+  const ButtonLoginBase({super.key, required this.text, required this.image, required this.onPressed});
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: onPressed,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(height: 30, width: 30, child: Image.asset(image,fit: BoxFit.cover,)),
+            Expanded(
+              flex: 2,
+                child: Transform.translate(
+                    offset: const Offset(50, 0),
+                  child:  Text(text, style: const TextStyle(
+                    fontSize: 16,
+                  ),),
+                )
+            )
+          ],
         )
     );
   }
