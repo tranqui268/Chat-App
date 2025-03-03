@@ -1,6 +1,8 @@
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/screen/forgot_password_page.dart';
+import 'package:chat_app/screen/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -95,7 +97,22 @@ class Login extends StatelessWidget {
               child: _ButtonLogin()
             ),
 
-            const Padding(padding: EdgeInsets.only(top: 100)),
+            Align( 
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap:() {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUp()));
+                },
+                child: const Text('Sign Up Now', style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic
+                  ) ,
+                ),
+              ),
+            ),
+
+            const Padding(padding: EdgeInsets.only(top: 80)),
             const DashedLineWithText(text: "OR CONTINUE WITH"),
 
             const Padding(padding: EdgeInsets.only(top: 40)),

@@ -3,6 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./Routes/UserRoute")
+const chatRoute = require("./Routes/ChatRoute")
+const messageRoute = require("./Routes/MessageRoute")
+const uploadRoute = require("./Routes/UploadRoute")
+const noteRoute = require("./Routes/NoteRoute")
 
 const connectDB = async () => {
     try {
@@ -23,6 +27,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/auth", userRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/message", messageRoute);
+app.use("/api", uploadRoute);
+app.use("/api/note", noteRoute);
 
 const port = 5000;
 

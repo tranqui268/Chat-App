@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8,
         maxlength: 1024
+    },
+    avatar : {
+        type : String,
+        default : 'https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png'
     }
 },
 {
