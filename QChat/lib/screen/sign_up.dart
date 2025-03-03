@@ -1,4 +1,5 @@
 import 'package:chat_app/constant.dart';
+import 'package:chat_app/screen/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -34,7 +35,21 @@ class SignUp extends StatelessWidget{
           children: [
             _EmailInput(),
             const SizedBox(height: 20,),
-            _NameInput()
+            _NameInput(),
+            const SizedBox(height: 20,),
+            _PasswordInput(),
+            const SizedBox(height: 20,),
+            _ConfirmPasswordInput(),
+            const SizedBox(height: 50,),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                shape: BoxShape.rectangle,
+                color: Constants.primaryColor
+              ),
+              width: 400,
+              child: _ButtonSignUp()
+            ),
 
           ],
         ),
@@ -68,5 +83,59 @@ class _NameInput extends StatelessWidget{
       ),
     );
   }
+}
+
+class _PasswordInput extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return const TextField(
+      decoration: InputDecoration(
+        hintText: 'Password',
+        border: OutlineInputBorder()
+        
+      ),
+      obscureText: true,
+    );
+  }
   
+}
+
+class _ConfirmPasswordInput extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return const TextField(
+      decoration: InputDecoration(
+        hintText: 'Confirm Password',
+        border: OutlineInputBorder()
+        
+      ),
+      obscureText: true,
+    );
+  }
+  
+}
+
+class _ButtonSignUp extends StatefulWidget{
+  @override
+  _ButtonSignUpState createState() => _ButtonSignUpState();
+}
+
+class _ButtonSignUpState extends State<_ButtonSignUp>{
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: (){
+          setState(() {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
+          });
+        },
+        child: const Text(
+            'Sign Up',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          )
+        )
+    );
+  }
 }

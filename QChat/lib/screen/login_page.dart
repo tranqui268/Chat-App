@@ -1,6 +1,7 @@
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/screen/forgot_password_page.dart';
 import 'package:chat_app/screen/sign_up.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -97,18 +98,24 @@ class Login extends StatelessWidget {
               child: _ButtonLogin()
             ),
 
-            Align( 
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                onTap:() {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUp()));
-                },
-                child: const Text('Sign Up Now', style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic
-                  ) ,
-                ),
+            const SizedBox(height: 10),
+            Center( 
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black, fontSize: 15),
+                  children: [
+                    const TextSpan(text: "Don't have an account?"),
+                    TextSpan(
+                      text: "Click here to register",
+                      style: const TextStyle(color: Constants.primaryColor, fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                         ..onTap = (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) =>  SignUp()));
+                        }
+                    )
+
+                  ]
+                )
               ),
             ),
 
