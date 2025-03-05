@@ -22,7 +22,7 @@ const createNote = async(req,res) =>{
 
 // get Note
 const getNote = async(req,res) =>{
-    const {user_id} = req.params;
+    const {user_id} = req.params.userId;
 
     try {
         const note = await noteModel.find(user_id)

@@ -7,6 +7,7 @@ const chatRoute = require("./Routes/ChatRoute")
 const messageRoute = require("./Routes/MessageRoute")
 const uploadRoute = require("./Routes/UploadRoute")
 const noteRoute = require("./Routes/NoteRoute")
+const notificationRoute = require("./Routes/NotificationRoute")
 
 const connectDB = async () => {
     try {
@@ -29,8 +30,9 @@ app.use(cors());
 app.use("/api/auth", userRoute);
 app.use("/api/chat", chatRoute);
 app.use("/api/message", messageRoute);
-app.use("/api", uploadRoute);
+app.use("/api/upload", uploadRoute);
 app.use("/api/note", noteRoute);
+app.use("/api/notification", notificationRoute);
 
 const port = 5000;
 
