@@ -1,9 +1,11 @@
 import 'package:chat_app/constant.dart';
 import 'package:chat_app/screen/forgot_password_page.dart';
+import 'package:chat_app/screen/home_page.dart';
+import 'package:chat_app/screen/message_page.dart';
 import 'package:chat_app/screen/sign_up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
+
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -213,7 +215,7 @@ class _ButtonLoginState extends State<_ButtonLogin>{
     return TextButton(
         onPressed: (){
           setState(() {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomePage()));
           });
         },
         child: const Text(
