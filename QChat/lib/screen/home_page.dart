@@ -1,3 +1,4 @@
+import 'package:chat_app/screen/menu_page.dart';
 import 'package:chat_app/screen/message_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage>{
     const MessagePage(),
     Text('AL'),
     Text('AL'),
-    Text('AL'),
+    const MenuPage(),
   ];
   @override
   Widget build(Object context) {
