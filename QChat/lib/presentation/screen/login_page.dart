@@ -1,8 +1,8 @@
 import 'package:chat_app/constant.dart';
-import 'package:chat_app/screen/forgot_password_page.dart';
-import 'package:chat_app/screen/home_page.dart';
-import 'package:chat_app/screen/message_page.dart';
-import 'package:chat_app/screen/sign_up.dart';
+import 'package:chat_app/presentation/screen/forgot_password_page.dart';
+import 'package:chat_app/presentation/screen/home_page.dart';
+import 'package:chat_app/presentation/screen/message_page.dart';
+import 'package:chat_app/presentation/screen/sign_up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

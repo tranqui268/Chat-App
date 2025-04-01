@@ -1,5 +1,6 @@
 import 'package:chat_app/constant.dart';
-import 'package:chat_app/screen/forgot_password_page.dart';
+import 'package:chat_app/presentation/screen/chat_page.dart';
+import 'package:chat_app/presentation/screen/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 
 class MessagePage extends StatelessWidget{
@@ -48,7 +49,12 @@ class MessagePage extends StatelessWidget{
             child: Container(
               child: ListView(
                 children: [
-                  _buildMessageTitle('Peter', 'abcccc', "https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png", '08:30',false)
+                 GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ChatPage()));
+                  },
+                  child:  _buildMessageTitle('Peter', 'abcccc', "https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png", '08:30',false),
+                 )
 
                 ]
               ),

@@ -1,5 +1,5 @@
 import 'package:chat_app/constant.dart';
-import 'package:chat_app/screen/forgot_password_page.dart';
+import 'package:chat_app/presentation/screen/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 
 

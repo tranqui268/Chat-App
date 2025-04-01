@@ -1,4 +1,4 @@
-import 'package:chat_app/screen/onboarding_screen.dart';
+import 'package:chat_app/presentation/screen/onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

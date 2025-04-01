@@ -1,5 +1,5 @@
-import 'package:chat_app/screen/menu_page.dart';
-import 'package:chat_app/screen/message_page.dart';
+import 'package:chat_app/presentation/screen/menu_page.dart';
+import 'package:chat_app/presentation/screen/message_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget{

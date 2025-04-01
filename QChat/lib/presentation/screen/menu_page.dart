@@ -20,7 +20,7 @@ class MenuPage extends StatelessWidget {
             onTap: (){
 
             },
-            child: _MenuItem('assets/icons/settings.png', 'Setting'),
+            child: _MenuItemInfo('https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png', 'Tran Qui'),
           ),
           GestureDetector(
             onTap: (){
@@ -82,6 +82,19 @@ class MenuPage extends StatelessWidget {
         )
         ]
       ),
+    );
+  }
+
+  Widget _MenuItemInfo(String url, String name){
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundImage: NetworkImage(url),
+      ),
+      title: Text(name, textAlign: TextAlign.left, style: const TextStyle(color: Colors.black, fontSize:20 ),),
+      subtitle: const Text('Change personal page', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontSize: 16),),
+
     );
   }
 }
