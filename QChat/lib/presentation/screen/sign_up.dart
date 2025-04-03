@@ -3,15 +3,35 @@ import 'package:chat_app/presentation/screen/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 
 
-class SignUp extends StatelessWidget{
+class SignUp extends StatefulWidget{
   const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
     backgroundColor: Colors.white,
     appBar: AppBar(
        elevation: 2.0,
-       title: const Text("Sign In", style: TextStyle(
+       title: const Text("Sign Up", style: TextStyle(
           color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.bold
@@ -28,18 +48,20 @@ class SignUp extends StatelessWidget{
         ),
        ),
       ),
-      body: Container(
+      body: ListView(
+        children: [
+          Container(
         padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
         alignment: Alignment.center,
         child: Column(        
           children: [
-            _EmailInput(),
+            _buildTextInput('Email Address', _emailController),
             const SizedBox(height: 20,),
-            _NameInput(),
+            _buildTextInput('Name', _nameController),
             const SizedBox(height: 20,),
-            _PasswordInput(),
+            _buildTextInput('Password', _passwordController),
             const SizedBox(height: 20,),
-            _ConfirmPasswordInput(),
+            _buildTextInput('Confirm Password', _confirmPasswordController),
             const SizedBox(height: 50,),
             Container(
               decoration: BoxDecoration(
@@ -48,82 +70,33 @@ class SignUp extends StatelessWidget{
                 color: Constants.primaryColor
               ),
               width: 400,
-              child: _ButtonSignUp()
+              child: _buildButtonSignUp()
             ),
 
           ],
         ),
       ),
 
+        ],
+      )
    );
   }
-   
-}
 
-class _EmailInput extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
+
+  Widget _buildTextInput(String hint, TextEditingController controller, {bool isPassword = false}){
+    return TextField(
+      controller: controller,
       decoration: InputDecoration(
-        hintText: 'Email Address',
-        border: OutlineInputBorder()
+        hintText: hint,
+        border: const OutlineInputBorder()
       ),
+      obscureText: isPassword,
     );
+
   }
-  
-}
 
-class _NameInput extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
-      decoration: InputDecoration(
-        hintText: 'Fullname',
-        border: OutlineInputBorder()
-      ),
-    );
-  }
-}
-
-class _PasswordInput extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
-      decoration: InputDecoration(
-        hintText: 'Password',
-        border: OutlineInputBorder()
-        
-      ),
-      obscureText: true,
-    );
-  }
-  
-}
-
-class _ConfirmPasswordInput extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
-      decoration: InputDecoration(
-        hintText: 'Confirm Password',
-        border: OutlineInputBorder()
-        
-      ),
-      obscureText: true,
-    );
-  }
-  
-}
-
-class _ButtonSignUp extends StatefulWidget{
-  @override
-  _ButtonSignUpState createState() => _ButtonSignUpState();
-}
-
-class _ButtonSignUpState extends State<_ButtonSignUp>{
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
+  Widget _buildButtonSignUp(){
+     return TextButton(
         onPressed: (){
           setState(() {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
@@ -138,4 +111,9 @@ class _ButtonSignUpState extends State<_ButtonSignUp>{
         )
     );
   }
+
+
 }
+
+
+

@@ -51,7 +51,7 @@ class MessagePage extends StatelessWidget{
                 children: [
                  GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ChatPage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => ChatPage()));
                   },
                   child:  _buildMessageTitle('Peter', 'abcccc', "https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png", '08:30',false),
                  )

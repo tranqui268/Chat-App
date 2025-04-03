@@ -7,8 +7,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  bool _isObscure = true;
+  bool isChecked = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,40 +49,42 @@ class Login extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+      body: ListView( 
+      children: [ Padding(
+        padding: const EdgeInsets.only(left: 30, right: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Welcome Back!', style: TextStyle(
               color: Colors.black,
-              fontSize: 28.0,
+              fontSize: 24.0,
               fontWeight: FontWeight.bold,
             ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 10)),
+            const SizedBox(height: 8,),
 
             const Text(Constants.descripLogin),
 
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            _UsernameInput(),
+            const SizedBox(height: 16,),
+            _buildUsernameInput('Email Address', _emailController),
 
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            _PasswordInput(),
+             const SizedBox(height: 12,),
+            _buildPasswordInput('Password', _passwordController),
 
             Row(
               children: [
                 Expanded(
                   flex: 1,
                   child: Transform.translate(
-                    offset: Offset(-25, 0),
-                    child: _CheckBoxRememberMe(),
+                    offset: const Offset(-25, 0),
+                    child: _buildCheckBoxRememberMe(),
                   ),
                 ),
                 Expanded(
                     flex: 2,
                     child: Transform.translate(
-                      offset: Offset(-40, 0),
+                      offset:const Offset(-40, 0),
                       child: const Text('Remember me?')
                     )
                 ),
@@ -89,7 +108,7 @@ class Login extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 12),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -97,7 +116,7 @@ class Login extends StatelessWidget {
                 color: Constants.primaryColor
               ),
               width: 400,
-              child: _ButtonLogin()
+              child: _buildButtonLogin()
             ),
 
             const SizedBox(height: 10),
@@ -125,44 +144,34 @@ class Login extends StatelessWidget {
             const DashedLineWithText(text: "OR CONTINUE WITH"),
 
             const Padding(padding: EdgeInsets.only(top: 40)),
-            ButtonLoginBase(text: 'Sign In With Facebook', image: 'assets/images/facebook.png', onPressed: (){}),
+            _buildButtonLoginBase('Sign In With Facebook', 'assets/images/facebook.png',(){}),
 
             const Padding(padding: EdgeInsets.only(top: 20)),
-            ButtonLoginBase(text: 'Sign In With Google', image: 'assets/images/google.png', onPressed: (){})
+            _buildButtonLoginBase('Sign In With Google', 'assets/images/google.png', (){})
 
           ],
         ),
       ),
+      ]
+      )
     );
   }
-}
 
-// Extra widget
-class _UsernameInput extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return const TextField(
+  Widget _buildUsernameInput(String hint, TextEditingController controller){
+     return TextField(
+      controller: controller,
       decoration: InputDecoration(
-        hintText: 'Email Address',
-        border: OutlineInputBorder()
+        hintText: hint,
+        border: const OutlineInputBorder()
 
       ),
     );
   }
-}
 
-class _PasswordInput extends StatefulWidget {
-  @override
-  _PasswordInputState createState() => _PasswordInputState();
-}
-
-class _PasswordInputState extends State<_PasswordInput>{
-  bool _isObscure = true;
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPasswordInput(String hint, TextEditingController controller){
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: hint,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           onPressed: (){
@@ -179,39 +188,7 @@ class _PasswordInputState extends State<_PasswordInput>{
     );
   }
 
-}
-
-class _CheckBoxRememberMe extends StatefulWidget {
-
-  @override
-  _CheckBoxState createState() => _CheckBoxState();
-}
-
-class _CheckBoxState extends State<_CheckBoxRememberMe>{
-  bool isChecked = false;
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: isChecked,
-      onChanged: (bool? newValue){
-        setState(() {
-          isChecked = newValue ?? false;
-        });
-      },
-      activeColor: Constants.primaryColor,
-    );
-
-  }
-}
-
-class _ButtonLogin extends StatefulWidget{
-  @override
-  _ButtonLoginState createState() => _ButtonLoginState();
-}
-
-class _ButtonLoginState extends State<_ButtonLogin>{
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildButtonLogin(){
     return TextButton(
         onPressed: (){
           setState(() {
@@ -227,16 +204,20 @@ class _ButtonLoginState extends State<_ButtonLogin>{
         )
     );
   }
-}
 
-class ButtonLoginBase extends StatelessWidget{
-  final String text;
-  final String image;
-  final VoidCallback onPressed;
+  Widget _buildCheckBoxRememberMe(){
+    return Checkbox(
+      value: isChecked,
+      onChanged: (bool? newValue){
+        setState(() {
+          isChecked = newValue ?? false;
+        });
+      },
+      activeColor: Constants.primaryColor,
+    );
+  }
 
-  const ButtonLoginBase({super.key, required this.text, required this.image, required this.onPressed});
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildButtonLoginBase(String text, String image, VoidCallback onPressed){
     return TextButton(
         onPressed: onPressed,
         child: Row(
@@ -255,10 +236,12 @@ class ButtonLoginBase extends StatelessWidget{
           ],
         )
     );
+
   }
 
 }
 
+// Extra widget
 class DashedLineWithText extends StatelessWidget {
   final String text;
 
