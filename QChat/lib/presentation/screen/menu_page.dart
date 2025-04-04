@@ -1,3 +1,4 @@
+import 'package:chat_app/presentation/screen/weather_page.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatelessWidget {
@@ -62,6 +63,13 @@ class MenuPage extends StatelessWidget {
             },
             child: _MenuItem('assets/icons/friends.png', 'Friend Request'),
           ),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (_) => WeatherPage()));
+
+            },
+            child: _MenuItem('assets/icons/cloudy.png', 'Weather'),
+          )
           
         ],
 
