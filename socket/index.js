@@ -21,6 +21,16 @@ io.on("connection", (socket) => {
             });
     });
     console.log("onlineUsers", onlineUsers);
+
+    socket.on('sendMessage', async (message) => {
+        const {conversationId, senderId, content} = message;
+
+        try {
+            
+        } catch (error) {
+            console.error('Failed to save message:', error);
+        }
+    })
 });
 
 io.listen(3000);

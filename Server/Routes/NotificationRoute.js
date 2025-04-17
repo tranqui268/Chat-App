@@ -5,3 +5,5 @@ const router = express.Router()
 router.post("/",createNotification)
 router.put("/read",readNotification)
 router.get("/",getNotification)
+
+module.exports = router

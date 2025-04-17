@@ -28,7 +28,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             padding: const EdgeInsets.only(right: 20, top: 20),
             child: InkWell(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const Login()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const LoginPage()));
               }, // to login screen
               child: const Text('Skip', style: TextStyle(
                 color: Colors.grey,
@@ -88,7 +88,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           _pageController.nextPage(duration: const Duration(microseconds: 300), curve: Curves.easeIn);
                         }
                       } else{
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const Login()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const LoginPage()));
                       }
                     });
                   },

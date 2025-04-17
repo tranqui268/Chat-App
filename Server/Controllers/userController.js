@@ -30,8 +30,7 @@ const registerUser = async (req, res) => {
 
         await user.save()
 
-        const token = createToken(user._id);
-        res.status(200).json({success: true, message:'Username create successfully',data:{_id: user._id ,name,email,token}})
+        res.status(200).json({success: true, message:'Username create successfully',data:{_id: user._id ,name,email}})
     }catch (error){
         console.log(error)
         res.status(500).json({
@@ -49,6 +48,10 @@ const loginUser = async (req, res) => {
         const isValidPassword = bcrypt.compare(password, user.password);
         if(!isValidPassword) return res.status(400).json({success : false, message:'Invalid username aor password' })
 
+        const userTmp = await userModel.findById(user._id);
+        userTmp.isOnline = true;
+        await userTmp.save()
+        
         const token = createToken(user._id);
         res.status(200).json({success: true, message:'Login successfully',data:{_id: user._id ,name: user.name,email,token}})
     } catch (error) {

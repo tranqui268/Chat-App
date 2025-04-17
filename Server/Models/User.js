@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
     avatar : {
         type : String,
         default : 'https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png'
+    },
+    isOnline : {
+        type : Boolean,
+        default : false
+    },
+    lastActive : {
+        type : Date,
+        default : Date.now
     }
 },
 {

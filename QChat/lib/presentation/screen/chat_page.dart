@@ -1,8 +1,17 @@
 import 'package:chat_app/constant.dart';
+import 'package:chat_app/presentation/bloc/message/message_bloc_bloc.dart';
+import 'package:chat_app/presentation/bloc/message/message_bloc_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../bloc/message/message_bloc_state.dart';
+
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  final String conservationId;
+  final String mate;
+  const ChatPage({super.key, required this.conservationId, required this.mate});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -12,10 +21,15 @@ class _ChatPageState extends State<ChatPage> {
   bool _isMenuExpanded = false;
   bool _isTyping = false;
   final TextEditingController _messageController = TextEditingController();
+  final _storage = FlutterSecureStorage();
+  String userId = '';
   
   @override
   void initState() {
     super.initState();
+    print(widget.conservationId);
+    BlocProvider.of<ChatBloc>(context).add(LoadMessagesEvent(widget.conservationId));
+    fetchUserId();
 
     _messageController.addListener(() {
       setState(() {
@@ -24,6 +38,24 @@ class _ChatPageState extends State<ChatPage> {
       
     });
   }
+
+  fetchUserId() async{
+    userId = await _storage.read(key: "userId") ?? '';
+    setState(() {
+      userId = userId;
+    });
+  }
+
+  void _sendMessage(){
+    final content = _messageController.text.trim();
+    if (content.isNotEmpty) {
+      BlocProvider.of<ChatBloc>(context).add(
+        SendMessageEvent(widget.conservationId, content)
+      );
+      _messageController.clear();
+    }
+  }
+
   @override
   void dispose() {
     _messageController.dispose();
@@ -35,15 +67,15 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               backgroundImage: NetworkImage("https://res.cloudinary.com/dhis8yzem/image/upload/v1741011247/chatApp/Avatar_default.png"),
             ),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             Text(
-              'Danny',
-              style: TextStyle(fontSize: 16),
+              '${widget.mate}',
+              style:const TextStyle(fontSize: 16),
             )
           ],
         ),
@@ -55,13 +87,32 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-                _buildReceivedMessage(context, 'Test test'),
-                _builSendMessage(context, 'Test test')
-              ],
+            child : BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state){
+                if (state is ChatLoadingState) {
+                  return const Center(child: CircularProgressIndicator(),);
+                } else if (state is ChatLoadedState){
+                  return  ListView.builder(
+                    padding: const EdgeInsets.all(20),
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index){
+                      final message = state.messages[index];
+                      final isSendMessage = message.senderId == userId;
+                      if (isSendMessage) {
+                        return _builSendMessage(context, message.text);                        
+                      }else{
+                        return _buildReceivedMessage(context, message.text);
+                      }
+                    },
+                  );
+
+                }else if (state is ChatErrorState){
+                  return Center(child: Text(state.message),);
+                }
+                return const Center(child: Text("No message found"),);
+              },
             )
+           
           ),
           _buildExpandableMenu(),
           _buildInputMessage(),
@@ -189,11 +240,7 @@ class _ChatPageState extends State<ChatPage> {
               _isTyping ? Icons.send : Icons.thumb_up,
               color: Constants.primaryColor,
             ),
-            onPressed: (){
-              if (_isTyping) {
-                _messageController.clear();
-              }
-            }
+            onPressed: _sendMessage
              
           )
 

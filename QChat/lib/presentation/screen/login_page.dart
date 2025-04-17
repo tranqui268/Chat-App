@@ -1,19 +1,24 @@
 import 'package:chat_app/constant.dart';
+import 'package:chat_app/presentation/bloc/auth/auth_bloc_bloc.dart';
+import 'package:chat_app/presentation/bloc/auth/auth_bloc_event.dart';
+import 'package:chat_app/presentation/bloc/auth/auth_bloc_state.dart';
+import 'package:chat_app/presentation/screen/chat_page.dart';
 import 'package:chat_app/presentation/screen/forgot_password_page.dart';
 import 'package:chat_app/presentation/screen/home_page.dart';
 import 'package:chat_app/presentation/screen/sign_up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage ({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginPage> {
   bool _isObscure = true;
   bool isChecked = false;
   final TextEditingController _emailController = TextEditingController();
@@ -24,6 +29,15 @@ class _LoginState extends State<Login> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _onLogin(){
+    BlocProvider.of<AuthBloc>(context).add(
+      LoginEvent(
+        email: _emailController.text, 
+        password: _passwordController.text
+      )
+    );
   }
 
   @override
@@ -106,17 +120,33 @@ class _LoginState extends State<Login> {
 
               ],
             ),
-
             const SizedBox(height: 12),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                shape: BoxShape.rectangle,
-                color: Constants.primaryColor
-              ),
-              width: 400,
-              child: _buildButtonLogin()
+            BlocConsumer<AuthBloc, AuthState>(
+              builder: (context, state){
+                if (state is AuthLoading) {
+                  return const Center(child: CircularProgressIndicator(),);
+                }
+                return  Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
+                          color: Constants.primaryColor
+                        ),
+                        width: 400,
+                        child: _buildButtonLogin(_onLogin)
+                      );
+              },
+              listener: (context, state){
+                if (state is AuthSuccess) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> HomePage()));
+                }else if (state is AuthFailure){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.error))
+                  );
+                }
+              }
             ),
+           
 
             const SizedBox(height: 10),
             Center( 
@@ -187,13 +217,9 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildButtonLogin(){
+  Widget _buildButtonLogin(VoidCallback onPressed){
     return TextButton(
-        onPressed: (){
-          setState(() {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomePage()));
-          });
-        },
+        onPressed: onPressed,
         child: const Text(
             'Sign In',
           style: TextStyle(
