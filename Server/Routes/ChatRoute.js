@@ -1,5 +1,5 @@
 const express = require('express');
-const { createChat, getUserChats, findChat, getInactiveTime } = require('../Controllers/chatController');
+const { createChat, getUserChats, findChat, getInactiveTime, checkChat } = require('../Controllers/chatController');
 const updateLastActive = require('../middleware/updateLastActive')
 
 const router = express.Router();
@@ -20,5 +20,7 @@ router.get("/",updateLastActive, getUserChats);
 router.get("/find/:secondId",updateLastActive, findChat);
 
 router.get("/inactive-time", getInactiveTime);
+
+router.post("/checkChat", checkChat)
 
 module.exports = router;

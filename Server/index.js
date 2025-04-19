@@ -10,6 +10,7 @@ const messageRoute = require("./Routes/MessageRoute")
 const uploadRoute = require("./Routes/UploadRoute")
 const noteRoute = require("./Routes/NoteRoute")
 const notificationRoute = require("./Routes/NotificationRoute")
+const contactRoute = require("./Routes/ContactRoute")
 const verifyToken = require("./middleware/auth");
 const { createMessage } = require('./Controllers/messageController');
 const { saveMessage } = require('./middleware/saveMessage');
@@ -86,7 +87,7 @@ app.use("/api/message", messageRoute);
 app.use("/api/upload", uploadRoute);
 app.use("/api/note", noteRoute);
 app.use("/api/notification", notificationRoute);
-
+app.use("/api/contact", contactRoute);
 
 const port = 5000;
 

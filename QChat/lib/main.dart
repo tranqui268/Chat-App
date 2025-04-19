@@ -1,17 +1,23 @@
 import 'package:chat_app/data/data_sources/auth_remote_data_source.dart';
+import 'package:chat_app/data/data_sources/contact_remote_data_source.dart';
 import 'package:chat_app/data/data_sources/conversation_remote_data_source.dart';
 import 'package:chat_app/data/data_sources/message_remote_data_source.dart';
 import 'package:chat_app/data/data_sources/user_remote_data_source.dart';
 import 'package:chat_app/data/repositories/auth_repositpry_impl.dart';
+import 'package:chat_app/data/repositories/contact_repository_impl.dart';
 import 'package:chat_app/data/repositories/conversation_repository_impl.dart';
 import 'package:chat_app/data/repositories/message_repository_impl.dart';
 import 'package:chat_app/data/repositories/user_repository_impl.dart';
+import 'package:chat_app/domain/use_cases/add_contact_use_case.dart';
+import 'package:chat_app/domain/use_cases/check_or_create_conversation_use_case.dart';
+import 'package:chat_app/domain/use_cases/fetch_contact_use_case.dart';
 import 'package:chat_app/domain/use_cases/fetch_conversation_use_case.dart';
 import 'package:chat_app/domain/use_cases/fetch_message_use_case.dart';
 import 'package:chat_app/domain/use_cases/get_user_by_id.dart';
 import 'package:chat_app/domain/use_cases/login_use_case.dart';
 import 'package:chat_app/domain/use_cases/register_use_case.dart';
 import 'package:chat_app/presentation/bloc/auth/auth_bloc_bloc.dart';
+import 'package:chat_app/presentation/bloc/contact/contact_bloc_bloc.dart';
 import 'package:chat_app/presentation/bloc/conversation/conversation_bloc_bloc.dart';
 import 'package:chat_app/presentation/bloc/message/message_bloc_bloc.dart';
 import 'package:chat_app/presentation/screen/onboarding_screen.dart';
@@ -27,12 +33,14 @@ void main() async{
   final conversationRepository = ConversationRepositoryImpl(dataSource: ConversationRemoteDataSource());
   final  userRepository = UserRepositoryImpl(dataSource: UserRemoteDataSource());
   final messageRepository = MessageRepositoryImpl(remoteDataSource: MessageRemoteDataSource());
+  final contactsRepository = ContactRepositoryImpl(remoteDataSource: ContactRemoteDataSource());
   runApp(
     MyApp(
       authrepository: authRepository, 
       conversationRepository: conversationRepository, 
       userRepository: userRepository,
       messageRepository: messageRepository,
+      contactsRepository: contactsRepository,
       )
   );
 }
@@ -42,12 +50,14 @@ class MyApp extends StatelessWidget{
   final ConversationRepositoryImpl conversationRepository;
   final UserRepositoryImpl  userRepository;
   final MessageRepositoryImpl messageRepository;
+  final ContactRepositoryImpl contactsRepository;
   const MyApp({
     Key? key, 
     required this.authrepository, 
     required this.conversationRepository, 
     required this.userRepository,
-    required this.messageRepository
+    required this.messageRepository,
+    required this.contactsRepository
   });
 
   @override
@@ -70,6 +80,14 @@ class MyApp extends StatelessWidget{
           create: (_) => ChatBloc(
             fetchMessageUseCase: FetchMessageUseCase(messageRepository: messageRepository)
             )
+        ),
+        BlocProvider(
+          create: (_) => ContactsBloc(
+            fetchContactUseCase:FetchContactUseCase(repository: contactsRepository) ,
+            addContactUseCase: AddContactUseCase(repository:contactsRepository),
+            checkOrCreateConversationUseCase: CheckOrCreateConversationUseCase(conversationRepository: conversationRepository)
+            
+          )
         )
       ], 
       child:  const MaterialApp(

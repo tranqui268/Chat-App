@@ -24,6 +24,36 @@ const createChat = async(req,res) => {
     }
 }
 
+// checkChat
+const checkChat = async(req,res) =>{
+    const userId = req.userId;
+    try {
+        const {contactId} = req.body;
+
+        if (!contactId) {
+            return res.status(400).json({ message: 'Contact ID is required' });
+        }
+        let conversation = await chatModel.findOne({
+            members: { $all: [userId, contactId], $size: 2 },
+        });
+
+        if (!conversation) {
+            // Tạo cuộc trò chuyện mới nếu chưa tồn tại
+            conversation = new chatModel({
+                members: [userId, contactId],
+            });
+            await conversation.save();
+        }
+
+        res.status(200).json({ conversationId: conversation._id });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false, message:'Internal server error'
+        })
+    }
+}
+
 // getUserChats
 const getUserChats = async(req, res) => {
     const userId = req.userId;
@@ -152,4 +182,4 @@ const getInactiveTime = async(req,res) => {
 
 }
 
-module.exports = {createChat, findChat, getUserChats, getInactiveTime};
+module.exports = {createChat, findChat, getUserChats, getInactiveTime, checkChat};

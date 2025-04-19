@@ -24,4 +24,22 @@ class ConversationRemoteDataSource{
       throw Exception('Failed to fetch conversation');
     }
   }
+
+  Future<String> checkOrCreateConversation({required String contactId}) async{
+    String token = await _storage.read(key: 'token') ?? '';
+    final response = await http.post(
+      Uri.parse('$baseUrl/chat/checkChat'),
+      body: jsonEncode({'contactId': contactId}),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token'
+      }
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['conversationId'];
+    }else{
+      throw Exception('Failed to check conversation');
+    }
+  }
 }

@@ -1,6 +1,11 @@
+import 'package:chat_app/domain/use_cases/fetch_contact_use_case.dart';
+import 'package:chat_app/presentation/bloc/contact/contact_bloc_bloc.dart';
+import 'package:chat_app/presentation/bloc/contact/contact_bloc_event.dart';
+import 'package:chat_app/presentation/screen/contact_page.dart';
 import 'package:chat_app/presentation/screen/menu_page.dart';
 import 'package:chat_app/presentation/screen/message_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
@@ -13,12 +18,14 @@ class _HomePageState extends State<HomePage>{
   List<Widget> widgetList =[
     const MessagePage(),
     Text('AL'),
-    Text('AL'),
+    const ContactPage(),
     const MenuPage(),
     
   ];
+
+
   @override
-  Widget build(Object context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
         index: myIndex,
@@ -31,6 +38,9 @@ class _HomePageState extends State<HomePage>{
           setState(() {
             myIndex = index;
           });
+          if (index == 2) {
+            BlocProvider.of<ContactsBloc>(context).add(FetchContacts());
+          }
         },
         currentIndex: myIndex,
         items: [
